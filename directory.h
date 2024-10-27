@@ -3,14 +3,16 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 #include <memory>  
 #include "file.h"
+#include "Link.h"
 
 class Directory {
 private:
     std::string name;
-    std::vector<File> files;  // List of files in the directory
-    std::vector<std::shared_ptr<Directory>> subdirectories;  // List of subdirectories
+    std::vector<File> files;
+    std::vector<std::shared_ptr<Directory>> subdirectories;  
 
 public:
     Directory(const std::string& name);
@@ -23,10 +25,14 @@ public:
     bool remove_subdirectory(const std::string& dirname);
     Directory* get_subdirectory(const std::string& dirname);
 
-    void list_contents() const;  // Lists files and subdirectories
-    std::string get_name() const;  // Accessor for directory name
-    std::vector<File>& get_files();  // Accessor for the list of files
-    std::vector<std::shared_ptr<Directory>>& get_subdirectories();  // Accessor for subdirectories
+    void list_contents() const;
+    std::string get_name() const;
+    std::vector<File>& get_files();
+    std::vector<std::shared_ptr<Directory>>& get_subdirectories();  
+     bool create_link(const std::string& link_name, Link::LinkType link_type, File* target_file = nullptr, const std::string& target_path = "");
+    void chmod(int new_permissions);
+    void chown(int new_owner_id);
+    File* resolve_symbolic_link(const Link& link);
 };
 
 #endif // DIRECTORY_H
